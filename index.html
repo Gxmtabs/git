@@ -2,12 +2,63 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>首页</title>
+	<title>轮播图</title>
 </head>
 <body>
-	<h1>首页 version 1.0</h1>
-	<h4>this is a tree branch</h4>
-	<h5>this is fix branch</h5>
-	<h6>用diff比较fix 分支的差异</h6>
+	<h2>CSS实现</h2>
+	<div class="wrapper-css">
+		<div class="container-css marquee">
+			<p>今天</p>
+			<p>明天</p>
+			<p>后天</p>
+			<p>今天</p>
+			<!-- 辅助元素，为实现循环轮播 -->
+		</div>
+	</div>
+	<script type="text/javascript">
+		/**
+		 * [marquee 轮播效果]
+		 * @param  {[type]} ele      [轮播元素容器]
+		 * @param  {[type]} delay    [轮播间隔时间]
+		 * @param  {[type]} duration [轮播动画时间]
+		 * @return {[type]}          [description]
+		 */
+		function marquee(ele, delay, duration) {
+			if (!ele) {
+				return false;
+			}
+
+			delay = delay || 2000;
+			duration = duration || 500;
+			var height = ele.clientHeight;
+			var active = true;
+			var len = ele.querySelectorAll('p').length - 1;
+
+			setTimeout(function () {
+				active = true;
+				ele.scrollTop = 1;// 开始动画
+				setInterval(function () {// 一个一个元素轮播
+					if (!active) return;
+
+					if (ele.scrollTop % height === 0) {
+						// 当有某一元素轮播完成时，重置active，并开始下一元素的轮播
+						active = false;
+						setTimeout(function () {
+							active = true;
+							ele.scrollTop += 1;
+						}, delay);
+						if (ele.scrollTop == len * height) {
+							ele.scrollTop = 0;
+						}
+					} else {
+						// 通过scrollTop值实现轮播滚动效果
+						ele.scrollTop += 1;
+					}
+				}, duration / height);
+			}, delay);
+		}
+
+		marquee(document.querySelector('.marquee'));
+	</script>
 </body>
 </html>
